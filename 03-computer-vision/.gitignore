@@ -1,0 +1,28 @@
+# Model files
+*.pt
+*.pth
+*.h5
+*.pkl
+models/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyc
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# Logs and temp files
+*.log
+logs/
+temp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/

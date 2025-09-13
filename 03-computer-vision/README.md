@@ -1,152 +1,106 @@
-# Computer Vision Object Detection System
+# Computer Vision System - Object Detection
 
-A professional real-time object detection system with FastAPI backend and modern responsive frontend interface.
+Real-time object detection system with sophisticated post-processing and modern web interface.
 
-## Features
+## Overview
 
-- Real-time object detection using pre-trained COCO models
-- FastAPI backend with async processing capabilities
-- Modern responsive web interface with professional styling
-- Adjustable confidence thresholds for detection sensitivity
-- Support for multiple image formats (JPG, PNG, BMP)
-- Professional visualization with detection statistics
-- Automated startup scripts for easy development
+This system demonstrates production-ready computer vision capabilities using pre-trained Faster R-CNN models with advanced duplicate filtering and professional web deployment.
+
+## Architecture
+
+```
+Input Image → Preprocessing → Faster R-CNN ResNet-50 FPN
+     ↓
+Detection Results → Post-processing → NMS + Custom Filtering
+     ↓
+FastAPI Response → Web Interface → Professional Visualization
+```
 
 ## Tech Stack
 
-**Backend:**
-- FastAPI - Modern async web framework
-- PyTorch - Deep learning framework
-- OpenCV - Computer vision library
-- Torchvision - Pre-trained models and utilities
+- **PyTorch + Torchvision** - Deep learning framework and pre-trained models
+- **Faster R-CNN ResNet-50 FPN** - State-of-the-art object detection architecture
+- **OpenCV** - Image preprocessing and computer vision utilities
+- **FastAPI** - Async web framework for model serving
+- **NumPy** - Numerical operations and array processing
+- **PIL** - Image loading and format handling
 
-**Frontend:**
-- HTML5/CSS3/JavaScript
-- Modern responsive design
-- Professional gradient styling
-- Real-time API communication
+## Key Features
 
-**Model:**
-- Pre-trained Faster R-CNN ResNet-50 FPN
-- COCO dataset trained (80+ object classes)
-- CPU and GPU inference support
-
-## Project Structure
-
-computer-vision-detector/
-├── src/
-│   ├── api/                    # FastAPI backend
-│   │   └── main.py            # API server and endpoints
-│   ├── frontend/              # Web interface
-│   │   └── app.html          # Modern responsive frontend
-│   ├── inference/             # Detection engine
-│   │   └── detector.py       # Object detection logic
-│   └── utils/                 # Utilities
-│       └── visualization.py  # Visualization tools
-├── requirements.txt           # Python dependencies
-├── run_project.bat           # Windows startup script
-├── start_project.sh          # Unix startup script
-└── README.md                 # This file
+- Pre-trained model with transfer learning (COCO dataset, 80+ classes)
+- Advanced post-processing with NMS and custom duplicate filtering
+- Real-time processing with 3-5 second response time
+- Configurable confidence and NMS thresholds
+- Professional responsive web interface with drag-drop support
+- Performance monitoring and inference time logging
 
 ## Quick Start
 
-### Prerequisites
-- Python 3.11+
-- Virtual environment recommended
-
-### Installation
-
-1. **Clone and setup:**
+1. **Setup environment:**
 ```bash
-git clone <repository-url>
-cd computer-vision-detector
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# venv\Scripts\activate   # Windows
-
-Install dependencies:
-
-bash#
 pip install -r requirements.txt
+```
 
-Run the application:
+2. **Run the application:**
+```bash
+# Start FastAPI backend
+python src/api/main.py
 
-bash# Automated startup (recommended)
-./run_project.bat        # Windows
-./start_project.sh       # Linux/Mac
+# Open frontend in browser
+open src/frontend/app.html
+```
 
-# Manual startup
-cd src/api
-python main.py
-# Then open src/frontend/app.html in browser
+3. **Access the system:**
+- API docs: http://localhost:8000/docs
+- Health check: http://localhost:8000/health
+- Frontend: Open app.html in browser
 
-Usage
+## Performance
 
-Access the application:
+- **Processing Time:** 3-5 seconds per image (CPU)
+- **Model Accuracy:** 85%+ on common objects
+- **Supported Classes:** 80+ COCO dataset objects
+- **Throughput:** Real-time processing capability
 
-API: http://localhost:8000
-Frontend: Open src/frontend/app.html in browser
-API Documentation: http://localhost:8000/docs
+## Project Structure
 
+```
+03-computer-vision/
+├── src/
+│   ├── api/
+│   │   └── main.py          # FastAPI backend
+│   ├── inference/
+│   │   └── detector.py      # Object detection logic
+│   ├── frontend/
+│   │   └── app.html         # Web interface
+│   └── utils/
+│       └── visualization.py # Visualization tools
+├── models/                  # Model weights
+└── requirements.txt         # Dependencies
+```
 
-Upload and detect:
+## Technical Implementation
 
-Click "Choose Image" or drag/drop an image
-Adjust confidence threshold if needed
-Click "Detect Objects" to run detection
-View results with statistics and object list
+**Model Architecture:**
+- Faster R-CNN ResNet-50 FPN backbone
+- Pre-trained on COCO dataset for robust detection
+- CPU and GPU inference support
 
+**Post-processing Pipeline:**
+- Confidence threshold filtering
+- Non-Maximum Suppression (NMS)
+- Custom duplicate detection with confidence-based filtering
 
+**Web Interface:**
+- Modern responsive design
+- Real-time confidence adjustment
+- Professional visualization with statistics
 
-API Endpoints
+## API Endpoints
 
-GET / - API information
-GET /health - Health check and status
-POST /detect - Object detection endpoint
-GET /stats - API usage statistics
+- `POST /detect` - Object detection with configurable confidence
+- `GET /health` - System health and model status
+- `GET /stats` - API usage statistics and performance metrics
+- `GET /` - API information and status
 
-Performance
-
-Processing Time: 3-5 seconds per image (CPU)
-Supported Classes: 80+ COCO dataset objects
-Accuracy: 85%+ on common objects
-Throughput: Real-time processing capability
-
-Development
-Architecture
-
-Modular design with separated concerns
-Async processing for scalability
-Modern frontend with professional styling
-Error handling and graceful fallbacks
-
-Features Implemented
-
-Single image detection
-Batch processing capability
-Real-time confidence adjustment
-Professional visualization
-Comprehensive error handling
-Performance monitoring
-
-Future Enhancements
-
-Custom model training pipeline
-Real-time video processing
-GPU acceleration optimization
-Cloud deployment configuration
-Advanced visualization options
-
-Requirements
-See requirements.txt for complete dependency list. Key packages:
-
-fastapi
-uvicorn
-torch
-torchvision
-opencv-python
-numpy
-pillow
-
-License
-This project is part of an AI Engineering portfolio demonstrating production-ready computer vision applications.
+Part of the [AI Engineering Portfolio](../README.md) demonstrating production computer vision system development.
