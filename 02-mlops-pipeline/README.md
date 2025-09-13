@@ -1,58 +1,39 @@
-# MLOps Pipeline Project
+# MLOps Pipeline - Production Machine Learning Operations
 
-End-to-end MLOps system demonstrating modern workflow orchestration, automated model lifecycle management, and production monitoring capabilities.
+End-to-end MLOps system with Dagster orchestration, automated model lifecycle management, and containerized deployment.
 
-## Project Structure
+## Overview
 
-```
-03-mlops-pipeline/
-├── src/                    # Source code
-│   ├── data/              # Data processing modules
-│   ├── models/            # Model architectures
-│   ├── training/          # Training scripts
-│   ├── evaluation/        # Evaluation utilities
-│   ├── deployment/        # Deployment code
-│   └── utils/             # Helper functions
-├── config/                # Configuration files
-├── infrastructure/        # Kubernetes & Terraform configs
-├── monitoring/           # Monitoring dashboards
-├── tests/                # Test suite
-└── docker/               # Docker configurations
-```
+This system demonstrates modern MLOps practices including asset-based pipeline orchestration, model training automation, and production serving with health monitoring.
+
+## Architecture
+
+Data Sources → Dagster Assets → Model Training → Model Registry
+↓
+FastAPI Serving ← Model Deployment ← Model Validation
+↓
+Health Checks → Monitoring → Performance Metrics
+
+## Tech Stack
+
+- **Dagster** - Modern data orchestration and pipeline management
+- **FastAPI** - High-performance model serving API
+- **Docker** - Containerization and deployment
+- **Scikit-learn** - Machine learning models
+- **Pandas** - Data processing and feature engineering
+- **Uvicorn** - ASGI server for production deployment
+
+## Key Features
+
+- Asset-based pipelines with declarative data lineage
+- Automated model training and validation workflows
+- Model versioning and registry management
+- Production serving with health checks
+- Containerized deployment with Docker Compose
+- Integrated logging and performance metrics
 
 ## Quick Start
 
-1. **Environment Setup**
-   ```bash
-   conda env create -f environment.yml
-   conda activate mlops-pipeline
-   ```
-
-2. **Install Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Run Pipeline**
-   ```bash
-   dagster dev
-   ```
-
-## Features
-
-- Automated data pipeline with quality validation
-- Distributed model training with hyperparameter optimization
-- Model versioning and registry management
-- Automated testing for model performance regression
-- Deployment automation with blue-green deployment strategy
-- Production monitoring with data drift and performance tracking
-
-## Technology Stack
-
-- **Orchestration**: Dagster
-- **Experiment Tracking**: Weights & Biases / MLflow
-- **Model Registry**: MLflow
-- **CI/CD**: GitHub Actions
-- **Monitoring**: Evidently AI
-- **Infrastructure**: Kubernetes with Helm charts
-- **Cloud Platform**: AWS (EKS, S3, RDS)
+1. **Setup environment:**
+```bash
+pip install -r requirements.txt

@@ -1,0 +1,29 @@
+# Environment and virtual environments
+.env
+mlops-env/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyc
+
+# Models and data
+models/
+data/
+
+# Logs and temp files
+*.log
+logs/
+temp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Unnecessary files
+New Text Document.txt
+
+# Dagster
+dagster_home/
