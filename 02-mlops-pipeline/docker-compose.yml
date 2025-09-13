@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  mlops-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - WANDB_DISABLED=true
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./config:/app/config
+    command: uvicorn src.api:app --host 0.0.0.0 --port 8000 --reload
+
+  dagster-ui:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - WANDB_DISABLED=true
+      - DAGSTER_HOME=/app/dagster_home
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./config:/app/config
+    command: dagster dev -h 0.0.0.0 -p 3000 -f src/dagster_definitions.py
+    depends_on:
+      - mlops-api

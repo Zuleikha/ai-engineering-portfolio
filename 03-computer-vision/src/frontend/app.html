@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Detection AI - Professional Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .upload-section {
+            padding: 40px;
+            text-align: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .upload-zone {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 60px 20px;
+            background: white;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-zone:hover {
+            border-color: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .upload-zone.dragover {
+            border-color: #4c51bf;
+            background: #f7fafc;
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 4em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            font-size: 1.3em;
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            box-shadow: 0 4px 15px rgba(245, 101, 101, 0.3);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 8px 25px rgba(245, 101, 101, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .slider-container {
+            margin: 20px 0;
+        }
+
+        .slider-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .slider {
+            width: 100%;
+            max-width: 300px;
+            height: 8px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .results-section {
+            padding: 40px;
+            background: #f8fafc;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .results-header h2 {
+            color: #2d3748;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .image-display {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .image-container {
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+        }
+
+        .image-container img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.02);
+        }
+
+        .image-label {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 1.1em;
+        }
+
+        .detection-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            color: #718096;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9em;
+        }
+
+        .detection-list {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .detection-list-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .detection-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f7fafc;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .detection-details {
+            flex-grow: 1;
+        }
+
+        .detection-class {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 1.1em;
+        }
+
+        .detection-confidence {
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #e2e8f0;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #4a5568;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .status-online {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-offline {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: currentColor;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .upload-section {
+                padding: 20px;
+            }
+            
+            .upload-zone {
+                padding: 40px 15px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>AI Object Detection</h1>
+            <p>Professional Computer Vision Demo</p>
+            <div id="status" class="status-indicator status-offline">
+                <div class="status-dot"></div>
+                <span>Checking connection...</span>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="upload-section">
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-icon">📸</div>
+                    <div class="upload-text">Drop an image here or click to select</div>
+                    <input type="file" id="fileInput" class="file-input" accept="image/*">
+                </div>
+
+                <div class="slider-container">
+                    <label class="slider-label" for="confidenceSlider">
+                        Confidence Threshold: <span id="confidenceValue">0.50</span>
+                    </label>
+                    <input type="range" id="confidenceSlider" class="slider" 
+                           min="0.1" max="1.0" step="0.05" value="0.50">
+                </div>
+
+                <div class="controls">
+                    <button id="uploadBtn" class="btn">Choose Image</button>
+                    <button id="detectBtn" class="btn btn-secondary" disabled>Detect Objects</button>
+                    <button id="clearBtn" class="btn btn-danger" disabled>Clear</button>
+                </div>
+            </section>
+
+            <section class="results-section hidden" id="resultsSection">
+                <div class="results-header">
+                    <h2>Detection Results</h2>
+                </div>
+
+                <div id="loadingIndicator" class="loading hidden">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Processing image...</div>
+                </div>
+
+                <div id="resultsContent" class="hidden">
+                    <div class="image-display">
+                        <div class="image-container">
+                            <img id="originalImage" alt="Original Image">
+                            <div class="image-label">Original Image</div>
+                        </div>
+                    </div>
+
+                    <div class="detection-stats">
+                        <div class="stat-card">
+                            <span class="stat-number" id="objectCount">0</span>
+                            <span class="stat-label">Objects Found</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="processingTime">0.0s</span>
+                            <span class="stat-label">Processing Time</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="avgConfidence">0%</span>
+                            <span class="stat-label">Avg Confidence</span>
+                        </div>
+                    </div>
+
+                    <div class="detection-list" id="detectionListContainer">
+                        <div class="detection-list-title">Detected Objects</div>
+                        <div id="detectionList">
+                            <!-- Detection items will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        class ObjectDetectionApp {
+            constructor() {
+                this.apiUrl = 'http://localhost:8000';
+                this.selectedFile = null;
+                this.isProcessing = false;
+                
+                this.initializeElements();
+                this.attachEventListeners();
+                this.checkAPIStatus();
+            }
+
+            initializeElements() {
+                this.uploadZone = document.getElementById('uploadZone');
+                this.fileInput = document.getElementById('fileInput');
+                this.uploadBtn = document.getElementById('uploadBtn');
+                this.detectBtn = document.getElementById('detectBtn');
+                this.clearBtn = document.getElementById('clearBtn');
+                this.confidenceSlider = document.getElementById('confidenceSlider');
+                this.confidenceValue = document.getElementById('confidenceValue');
+                this.statusIndicator = document.getElementById('status');
+                this.resultsSection = document.getElementById('resultsSection');
+                this.loadingIndicator = document.getElementById('loadingIndicator');
+                this.resultsContent = document.getElementById('resultsContent');
+                this.originalImage = document.getElementById('originalImage');
+                this.objectCount = document.getElementById('objectCount');
+                this.processingTime = document.getElementById('processingTime');
+                this.avgConfidence = document.getElementById('avgConfidence');
+                this.detectionList = document.getElementById('detectionList');
+            }
+
+            attachEventListeners() {
+                // File upload events
+                this.uploadZone.addEventListener('click', () => this.fileInput.click());
+                this.uploadBtn.addEventListener('click', () => this.fileInput.click());
+                this.fileInput.addEventListener('change', (e) => this.handleFileSelect(e));
+                
+                // Drag and drop events
+                this.uploadZone.addEventListener('dragover', (e) => this.handleDragOver(e));
+                this.uploadZone.addEventListener('dragleave', () => this.handleDragLeave());
+                this.uploadZone.addEventListener('drop', (e) => this.handleDrop(e));
+                
+                // Control events
+                this.detectBtn.addEventListener('click', () => this.detectObjects());
+                this.clearBtn.addEventListener('click', () => this.clearResults());
+                this.confidenceSlider.addEventListener('input', (e) => this.updateConfidenceValue(e));
+            }
+
+            async checkAPIStatus() {
+                try {
+                    const response = await fetch(`${this.apiUrl}/health`);
+                    if (response.ok) {
+                        this.updateStatus(true, 'API Connected');
+                    } else {
+                        this.updateStatus(false, 'API Error');
+                    }
+                } catch (error) {
+                    this.updateStatus(false, 'API Offline');
+                }
+            }
+
+            updateStatus(isOnline, message) {
+                this.statusIndicator.className = `status-indicator ${isOnline ? 'status-online' : 'status-offline'}`;
+                this.statusIndicator.querySelector('span').textContent = message;
+            }
+
+            handleDragOver(e) {
+                e.preventDefault();
+                this.uploadZone.classList.add('dragover');
+            }
+
+            handleDragLeave() {
+                this.uploadZone.classList.remove('dragover');
+            }
+
+            handleDrop(e) {
+                e.preventDefault();
+                this.uploadZone.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    this.processFile(files[0]);
+                }
+            }
+
+            handleFileSelect(e) {
+                if (e.target.files.length > 0) {
+                    this.processFile(e.target.files[0]);
+                }
+            }
+
+            processFile(file) {
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select an image file');
+                    return;
+                }
+
+                this.selectedFile = file;
+                
+                // Preview the image
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.originalImage.src = e.target.result;
+                    this.uploadZone.querySelector('.upload-text').textContent = file.name;
+                    this.detectBtn.disabled = false;
+                    this.clearBtn.disabled = false;
+                };
+                reader.readAsDataURL(file);
+            }
+
+            updateConfidenceValue(e) {
+                this.confidenceValue.textContent = parseFloat(e.target.value).toFixed(2);
+            }
+
+            async detectObjects() {
+                if (!this.selectedFile || this.isProcessing) return;
+
+                this.isProcessing = true;
+                this.detectBtn.disabled = true;
+                this.resultsSection.classList.remove('hidden');
+                this.loadingIndicator.classList.remove('hidden');
+                this.resultsContent.classList.add('hidden');
+
+                const formData = new FormData();
+                formData.append('file', this.selectedFile);
+
+                const confidence = parseFloat(this.confidenceSlider.value);
+
+                try {
+                    const response = await fetch(`${this.apiUrl}/detect?confidence_threshold=${confidence}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    this.displayResults(result);
+
+                } catch (error) {
+                    console.error('Detection failed:', error);
+                    alert('Detection failed. Please check if the API is running.');
+                } finally {
+                    this.isProcessing = false;
+                    this.detectBtn.disabled = false;
+                    this.loadingIndicator.classList.add('hidden');
+                }
+            }
+
+            displayResults(result) {
+                // Show results content
+                this.resultsContent.classList.remove('hidden');
+                this.resultsContent.classList.add('fade-in');
+
+                // Update statistics
+                this.objectCount.textContent = result.detections.length;
+                this.processingTime.textContent = `${result.processing_time.toFixed(2)}s`;
+                
+                const avgConf = result.detections.length > 0 
+                    ? result.detections.reduce((sum, det) => sum + det.confidence, 0) / result.detections.length
+                    : 0;
+                this.avgConfidence.textContent = `${Math.round(avgConf * 100)}%`;
+
+                // Display detection list
+                this.displayDetectionList(result.detections);
+            }
+
+            displayDetectionList(detections) {
+                this.detectionList.innerHTML = '';
+                
+                if (detections.length === 0) {
+                    this.detectionList.innerHTML = '<p style="text-align: center; color: #718096;">No objects detected</p>';
+                    return;
+                }
+
+                detections.forEach(detection => {
+                    const item = document.createElement('div');
+                    item.className = 'detection-item';
+                    
+                    item.innerHTML = `
+                        <div class="detection-details">
+                            <div class="detection-class">${detection.class_name}</div>
+                            <div class="detection-confidence">${Math.round(detection.confidence * 100)}% confidence</div>
+                        </div>
+                    `;
+                    
+                    this.detectionList.appendChild(item);
+                });
+            }
+
+            clearResults() {
+                this.selectedFile = null;
+                this.fileInput.value = '';
+                this.uploadZone.querySelector('.upload-text').textContent = 'Drop an image here or click to select';
+                this.detectBtn.disabled = true;
+                this.clearBtn.disabled = true;
+                this.resultsSection.classList.add('hidden');
+                this.originalImage.src = '';
+            }
+        }
+
+        // Initialize the app when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new ObjectDetectionApp();
+        });
+    </script>
+</body>
+</html>
