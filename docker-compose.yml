@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  rag-assistant:
+    build: ./01-rag-assistant
+    ports:
+      - "8501:8501"  # Streamlit
+      - "8000:8000"  # FastAPI
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./01-rag-assistant/data:/app/data
+      - ./01-rag-assistant/models:/app/models
+    networks:
+      - ai-portfolio
+
+  mlops-pipeline:
+    build: ./02-mlops-pipeline
+    ports:
+      - "8001:8000"  # FastAPI
+      - "5000:5000"  # MLflow UI
+    volumes:
+      - ./02-mlops-pipeline/data:/app/data
+      - ./02-mlops-pipeline/models:/app/models
+    networks:
+      - ai-portfolio
+
+  computer-vision:
+    build: ./03-computer-vision
+    ports:
+      - "8002:8000"  # FastAPI
+    volumes:
+      - ./03-computer-vision/models:/app/models
+    networks:
+      - ai-portfolio
+
+networks:
+  ai-portfolio:
+    driver: bridge
