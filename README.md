@@ -4,6 +4,16 @@ Production-ready AI systems across NLP, MLOps, and Computer Vision.
 
 ## Projects
 
+## Live Cloud Demo
+
+**RAG Assistant:** http://16.170.240.55
+- API Documentation: http://16.170.240.55/docs
+- Health Check: http://16.170.240.55/health
+- **Cloud Platform:** AWS EC2 Ubuntu Server
+- **Status:** Production deployment
+
+This demonstrates production cloud deployment capabilities including AWS infrastructure setup, environment configuration, and API serving.
+
 ### 1. RAG Assistant - Natural Language Processing
 **Tech Stack:** FastAPI, Streamlit, OpenAI, LangChain, Docker
 
