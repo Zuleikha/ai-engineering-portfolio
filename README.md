@@ -12,6 +12,8 @@ Production-ready AI systems across NLP, MLOps, and Computer Vision.
 - **Cloud Platform:** AWS EC2 Ubuntu Server
 - **Status:** Production deployment
 
+**Status:** Available on-demand for demonstrations
+
 This demonstrates production cloud deployment capabilities including AWS infrastructure setup, environment configuration, and API serving.
 
 ### 1. RAG Assistant - Natural Language Processing
